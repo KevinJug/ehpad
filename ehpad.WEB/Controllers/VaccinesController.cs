@@ -9,17 +9,18 @@ using ehpad.ORM;
 
 namespace ehpad.WEB.Controllers
 {
-    public class BrandsController : Controller
+    public class VaccinesController : Controller
     {
         private readonly Context _context = new Context();
 
-        // GET: Brands
+        // GET: Vaccines
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            var context = _context.Vaccines.Include(v => v.Brand).Include(v => v.Drug);
+            return View(await context.ToListAsync());
         }
 
-        // GET: Brands/Details/5
+        // GET: Vaccines/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -27,39 +28,45 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
+            var vaccine = await _context.Vaccines
+                .Include(v => v.Brand)
+                .Include(v => v.Drug)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            if (vaccine == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(vaccine);
         }
 
-        // GET: Brands/Create
+        // GET: Vaccines/Create
         public IActionResult Create()
         {
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name");
+            ViewData["DrugId"] = new SelectList(_context.Drugs, "Id", "Name");
             return View();
         }
 
-        // POST: Brands/Create
+        // POST: Vaccines/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Create([Bind("Id,Lot,DrugId,BrandId")] Vaccine vaccine)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(brand);
+                _context.Add(vaccine);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", vaccine.BrandId);
+            ViewData["DrugId"] = new SelectList(_context.Drugs, "Id", "Name", vaccine.DrugId);
+            return View(vaccine);
         }
 
-        // GET: Brands/Edit/5
+        // GET: Vaccines/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -67,22 +74,24 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands.FindAsync(id);
-            if (brand == null)
+            var vaccine = await _context.Vaccines.FindAsync(id);
+            if (vaccine == null)
             {
                 return NotFound();
             }
-            return View(brand);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", vaccine.BrandId);
+            ViewData["DrugId"] = new SelectList(_context.Drugs, "Id", "Name", vaccine.DrugId);
+            return View(vaccine);
         }
 
-        // POST: Brands/Edit/5
+        // POST: Vaccines/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Lot,DrugId,BrandId")] Vaccine vaccine)
         {
-            if (id != brand.Id)
+            if (id != vaccine.Id)
             {
                 return NotFound();
             }
@@ -91,12 +100,12 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
-                    _context.Update(brand);
+                    _context.Update(vaccine);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BrandExists(brand.Id))
+                    if (!VaccineExists(vaccine.Id))
                     {
                         return NotFound();
                     }
@@ -107,10 +116,12 @@ namespace ehpad.WEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Name", vaccine.BrandId);
+            ViewData["DrugId"] = new SelectList(_context.Drugs, "Id", "Name", vaccine.DrugId);
+            return View(vaccine);
         }
 
-        // GET: Brands/Delete/5
+        // GET: Vaccines/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -118,30 +129,32 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
+            var vaccine = await _context.Vaccines
+                .Include(v => v.Brand)
+                .Include(v => v.Drug)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            if (vaccine == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(vaccine);
         }
 
-        // POST: Brands/Delete/5
+        // POST: Vaccines/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
+            var vaccine = await _context.Vaccines.FindAsync(id);
+            _context.Vaccines.Remove(vaccine);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BrandExists(int id)
+        private bool VaccineExists(int id)
         {
-            return _context.Brands.Any(e => e.Id == id);
+            return _context.Vaccines.Any(e => e.Id == id);
         }
     }
 }

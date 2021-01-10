@@ -22,11 +22,15 @@ namespace ehpad.ORM
         [Display(Name = "Vaccin")]
         [Required(ErrorMessage = "Vous devez ajouter un vaccin.")]
         public int VaccineId { get; set; }
+
+        [Display(Name = "Vaccin")]
         public Vaccine Vaccine { get; set; }
 
         [Display(Name = "Personne")]
         [Required(ErrorMessage = "Vous devez ajouter une personne.")]
         public int PeopleId { get; set; }
+
+        [Display(Name = "Personne")]
         public People People { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

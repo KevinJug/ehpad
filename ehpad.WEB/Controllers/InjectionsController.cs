@@ -9,17 +9,18 @@ using ehpad.ORM;
 
 namespace ehpad.WEB.Controllers
 {
-    public class BrandsController : Controller
+    public class InjectionsController : Controller
     {
         private readonly Context _context = new Context();
 
-        // GET: Brands
+        // GET: Injections
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            var context = _context.Injections.Include(i => i.People).Include(i => i.Vaccine);
+            return View(await context.ToListAsync());
         }
 
-        // GET: Brands/Details/5
+        // GET: Injections/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -27,39 +28,45 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            var injection = await _context.Injections
+                .Include(i => i.People)
+                .Include(i => i.Vaccine)
+                .FirstOrDefaultAsync(m => m.PeopleId == id);
+            if (injection == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(injection);
         }
 
-        // GET: Brands/Create
+        // GET: Injections/Create
         public IActionResult Create()
         {
+            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
+            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
             return View();
         }
 
-        // POST: Brands/Create
+        // POST: Injections/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Create([Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(brand);
+                _context.Add(injection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
+            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
+            return View(injection);
         }
 
-        // GET: Brands/Edit/5
+        // GET: Injections/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -67,22 +74,24 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands.FindAsync(id);
-            if (brand == null)
+            var injection = await _context.Injections.FindAsync(id);
+            if (injection == null)
             {
                 return NotFound();
             }
-            return View(brand);
+            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
+            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
+            return View(injection);
         }
 
-        // POST: Brands/Edit/5
+        // POST: Injections/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
         {
-            if (id != brand.Id)
+            if (id != injection.PeopleId)
             {
                 return NotFound();
             }
@@ -91,12 +100,12 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
-                    _context.Update(brand);
+                    _context.Update(injection);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BrandExists(brand.Id))
+                    if (!InjectionExists(injection.PeopleId))
                     {
                         return NotFound();
                     }
@@ -107,10 +116,12 @@ namespace ehpad.WEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
+            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
+            return View(injection);
         }
 
-        // GET: Brands/Delete/5
+        // GET: Injections/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -118,30 +129,32 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            var injection = await _context.Injections
+                .Include(i => i.People)
+                .Include(i => i.Vaccine)
+                .FirstOrDefaultAsync(m => m.PeopleId == id);
+            if (injection == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(injection);
         }
 
-        // POST: Brands/Delete/5
+        // POST: Injections/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
+            var injection = await _context.Injections.FindAsync(id);
+            _context.Injections.Remove(injection);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BrandExists(int id)
+        private bool InjectionExists(int id)
         {
-            return _context.Brands.Any(e => e.Id == id);
+            return _context.Injections.Any(e => e.PeopleId == id);
         }
     }
 }

@@ -9,17 +9,17 @@ using ehpad.ORM;
 
 namespace ehpad.WEB.Controllers
 {
-    public class BrandsController : Controller
+    public class DrugsController : Controller
     {
         private readonly Context _context = new Context();
 
-        // GET: Brands
+        // GET: Drugs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            return View(await _context.Drugs.ToListAsync());
         }
 
-        // GET: Brands/Details/5
+        // GET: Drugs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -27,39 +27,39 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
+            var drug = await _context.Drugs
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            if (drug == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(drug);
         }
 
-        // GET: Brands/Create
+        // GET: Drugs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Brands/Create
+        // POST: Drugs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Drug drug)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(brand);
+                _context.Add(drug);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            return View(drug);
         }
 
-        // GET: Brands/Edit/5
+        // GET: Drugs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -67,22 +67,22 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands.FindAsync(id);
-            if (brand == null)
+            var drug = await _context.Drugs.FindAsync(id);
+            if (drug == null)
             {
                 return NotFound();
             }
-            return View(brand);
+            return View(drug);
         }
 
-        // POST: Brands/Edit/5
+        // POST: Drugs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Brand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Drug drug)
         {
-            if (id != brand.Id)
+            if (id != drug.Id)
             {
                 return NotFound();
             }
@@ -91,12 +91,12 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
-                    _context.Update(brand);
+                    _context.Update(drug);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BrandExists(brand.Id))
+                    if (!DrugExists(drug.Id))
                     {
                         return NotFound();
                     }
@@ -107,10 +107,10 @@ namespace ehpad.WEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(brand);
+            return View(drug);
         }
 
-        // GET: Brands/Delete/5
+        // GET: Drugs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -118,30 +118,30 @@ namespace ehpad.WEB.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.Brands
+            var drug = await _context.Drugs
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            if (drug == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(drug);
         }
 
-        // POST: Brands/Delete/5
+        // POST: Drugs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
+            var drug = await _context.Drugs.FindAsync(id);
+            _context.Drugs.Remove(drug);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BrandExists(int id)
+        private bool DrugExists(int id)
         {
-            return _context.Brands.Any(e => e.Id == id);
+            return _context.Drugs.Any(e => e.Id == id);
         }
     }
 }
