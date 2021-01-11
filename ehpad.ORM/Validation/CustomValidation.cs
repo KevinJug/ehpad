@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text;
 
 namespace ehpad.ORM.Validation
@@ -40,11 +41,35 @@ namespace ehpad.ORM.Validation
         }
     }
 
+    public class AfterVaccineDate : ValidationAttribute
+    {
+        public string VaccineDate { get; set; }
+
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            PropertyInfo vaccineDateProperty = validationContext.ObjectType.GetProperty(VaccineDate);
+
+            DateTime vaccineDate = (DateTime)vaccineDateProperty.GetValue(validationContext.ObjectInstance, null);
+
+            DateTime reminderDate = Convert.ToDateTime(value);
+
+            if (reminderDate > vaccineDate)
+            {
+                return ValidationResult.Success;
+            } else
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+        }
+
+    }
+
     public class SexValidation : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (Convert.ToString(value) == "H" || Convert.ToString(value) == "F")
+            if (Convert.ToString(value) == "Homme" || Convert.ToString(value) == "Femme")
                 return ValidationResult.Success;
             else
                 return new ValidationResult(ErrorMessage);
@@ -55,7 +80,7 @@ namespace ehpad.ORM.Validation
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (Convert.ToString(value) == "R" || Convert.ToString(value) == "P")
+            if (Convert.ToString(value) == "Résident" || Convert.ToString(value) == "Personnel")
                 return ValidationResult.Success;
             else
                 return new ValidationResult(ErrorMessage);

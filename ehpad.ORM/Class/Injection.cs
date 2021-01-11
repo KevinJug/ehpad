@@ -17,6 +17,7 @@ namespace ehpad.ORM
         [Display(Name = "Date de rappel")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "Vous devez ajouter une date de rappel.")]
+        [AfterVaccineDate(VaccineDate= "VaccineDate", ErrorMessage = "La date de rappel doit être supérieur à la date de vaccination.")]
         public DateTime ReminderDate { get; set; }
 
         [Display(Name = "Vaccin")]
@@ -32,16 +33,5 @@ namespace ehpad.ORM
 
         [Display(Name = "Personne")]
         public People People { get; set; }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (this.ReminderDate < this.VaccineDate)
-            {
-                yield return new ValidationResult(
-                    errorMessage: "La date de rappel doit être supérieur à la date de vaccination.",
-                    memberNames: new[] { "ReminderDate" }
-               );
-            }
-        }
     }
 }
