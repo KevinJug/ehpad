@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ehpad.ORM.Injection>
+
+@{
+    ViewData["Title"] = "Détails";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VaccineDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReminderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vaccine)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VaccineDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReminderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vaccine.Drug.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
