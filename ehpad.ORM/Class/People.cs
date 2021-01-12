@@ -8,6 +8,7 @@ namespace ehpad.ORM
 {
     public class People
     {
+        [Display(Name = "Personne")]
         public int Id { get; set; }
 
 
