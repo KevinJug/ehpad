@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.People.Condition)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <!--@Html.ActionLink("Edit", "Edit", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |-->
+                @Html.ActionLink("Details", "Details", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id })
             </td>
         </tr>
 }
