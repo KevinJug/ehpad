@@ -21,9 +21,9 @@ namespace ehpad.WEB.Controllers
         }
 
         // GET: Injections/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? idVaccine, int? idPeople)
         {
-            if (id == null)
+            if (idVaccine == null || idPeople == null)
             {
                 return NotFound();
             }
@@ -31,7 +31,7 @@ namespace ehpad.WEB.Controllers
             var injection = await _context.Injections
                 .Include(i => i.People)
                 .Include(i => i.Vaccine)
-                .FirstOrDefaultAsync(m => m.PeopleId == id);
+                .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
                 return NotFound();
@@ -55,11 +55,19 @@ namespace ehpad.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
         {
+            ViewData["erreur"] = null;
             if (ModelState.IsValid)
             {
-                _context.Add(injection);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               /*var injectionFind = await _context.Injections
+                .Where(m => m.PeopleId == injection.PeopleId && m.VaccineId == injection.VaccineId).ToListAsync();
+                System.Diagnostics.Debug.WriteLine(injectionFind);
+                if (injectionFind == null)
+                {*/
+                    _context.Add(injection);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                //}
+                //ViewData["erreur"] = "Cette personne a déjà reçu ce vaccin.";
             }
             ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
             ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
@@ -67,14 +75,14 @@ namespace ehpad.WEB.Controllers
         }
 
         // GET: Injections/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? idVaccine, int? idPeople)
         {
-            if (id == null)
+            if (idVaccine == null || idPeople == null)
             {
                 return NotFound();
             }
 
-            var injection = await _context.Injections.FindAsync(id);
+            var injection = await _context.Injections.FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine); ;
             if (injection == null)
             {
                 return NotFound();
@@ -89,9 +97,9 @@ namespace ehpad.WEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
+        public async Task<IActionResult> Edit(int VaccineId, int PeopleId, [Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
         {
-            if (id != injection.PeopleId)
+            if (PeopleId != injection.PeopleId || VaccineId != injection.VaccineId)
             {
                 return NotFound();
             }
@@ -105,7 +113,7 @@ namespace ehpad.WEB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InjectionExists(injection.PeopleId))
+                    if (!InjectionExists(injection.PeopleId, injection.VaccineId))
                     {
                         return NotFound();
                     }
@@ -122,9 +130,9 @@ namespace ehpad.WEB.Controllers
         }
 
         // GET: Injections/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? idVaccine, int? idPeople)
         {
-            if (id == null)
+            if (idVaccine == null || idPeople == null)
             {
                 return NotFound();
             }
@@ -132,7 +140,7 @@ namespace ehpad.WEB.Controllers
             var injection = await _context.Injections
                 .Include(i => i.People)
                 .Include(i => i.Vaccine)
-                .FirstOrDefaultAsync(m => m.PeopleId == id);
+                .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
                 return NotFound();
@@ -144,17 +152,17 @@ namespace ehpad.WEB.Controllers
         // POST: Injections/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int VaccineId, int PeopleId)
         {
-            var injection = await _context.Injections.FindAsync(id);
+            var injection = await _context.Injections.FirstOrDefaultAsync(m => m.PeopleId == PeopleId && m.VaccineId == VaccineId);
             _context.Injections.Remove(injection);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InjectionExists(int id)
+        private bool InjectionExists(int idPeople, int idVaccine)
         {
-            return _context.Injections.Any(e => e.PeopleId == id);
+            return _context.Injections.Any(e => e.PeopleId == idPeople && e.VaccineId == idVaccine);
         }
     }
 }
