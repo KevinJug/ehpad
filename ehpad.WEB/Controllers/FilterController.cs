@@ -25,7 +25,7 @@ namespace ehpad.WEB.Controllers
                                                          Text = p.Name + " " + p.Firstname
                                                      };
             ViewData["People"] = new SelectList(
-               selectList, 
+               selectList.OrderBy(people => people.Text), 
                 "Value", 
                 "Text");
             ViewData["Injection"] = null;
@@ -47,13 +47,18 @@ namespace ehpad.WEB.Controllers
                                                          Text = p.Name + " " + p.Firstname
                                                      };
             ViewData["People"] = new SelectList(
-               selectList,
+               selectList.OrderBy(people => people.Text),
                 "Value",
                 "Text");
 
             ViewData["Injection"] = await _context.Injections
                 .Include("Vaccine.Drug")
-                .Where(m => m.PeopleId == people.Id).ToListAsync();
+                .Where(m => m.PeopleId == people.Id)
+                .OrderBy(injection => injection.People.Name)
+                .ThenBy(injection => injection.People.Firstname)
+                .ThenBy(injection => injection.Vaccine.Drug.Name)
+                .ThenBy(injection => injection.ReminderDate)
+                .ToListAsync();
 
             return View("Index");
         }

@@ -16,7 +16,7 @@ namespace ehpad.ORM.Validation
         {
 
             DateTime date = Convert.ToDateTime(value);
-            DateTime minDate = Convert.ToDateTime(DateTime.Now.AddYears(-60).ToShortDateString());
+            DateTime minDate = Convert.ToDateTime(DateTime.Now.AddYears(-15).ToShortDateString());
             DateTime maxDate = Convert.ToDateTime(DateTime.Now.AddYears(-140).ToShortDateString());
 
             if (date <= minDate && date >= maxDate)
