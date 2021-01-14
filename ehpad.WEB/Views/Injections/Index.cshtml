@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.ReminderDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Vaccine.Lot)
+                @Html.DisplayFor(modelItem => item.Vaccine.Drug.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.People.Condition)
+                @Html.DisplayFor(modelItem => item.People.Name) @Html.DisplayFor(modelItem => item.People.Firstname)
             </td>
             <td>
                 <!--@Html.ActionLink("Edit", "Edit", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |-->

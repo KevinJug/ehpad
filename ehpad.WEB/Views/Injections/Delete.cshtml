@@ -27,14 +27,14 @@
             @Html.DisplayNameFor(model => model.Vaccine)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vaccine.Lot)
+            @Html.DisplayFor(model => model.Vaccine.Drug.Name)
         </dd class>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.People)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.People.Condition)
-        </dd class>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.People.Name)  @Html.DisplayFor(model => model.People.Firstname)
+        </dd>
     </dl>
     
     <form asp-action="Delete">

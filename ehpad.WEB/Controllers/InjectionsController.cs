@@ -16,8 +16,8 @@ namespace ehpad.WEB.Controllers
         // GET: Injections
         public async Task<IActionResult> Index()
         {
-            var context = _context.Injections.Include(i => i.People).Include(i => i.Vaccine);
-            return View(await context.ToListAsync());
+            var context = _context.Injections.Include(i => i.People).Include("Vaccine.Drug");
+            return View(await context.OrderByDescending(injection => injection.ReminderDate).ThenBy(injection => injection.People.Name).ThenBy(injection => injection.People.Firstname).ToListAsync());
         }
 
         // GET: Injections/Details/5
@@ -30,7 +30,7 @@ namespace ehpad.WEB.Controllers
 
             var injection = await _context.Injections
                 .Include(i => i.People)
-                .Include(i => i.Vaccine)
+                .Include("Vaccine.Drug")
                 .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
@@ -43,8 +43,30 @@ namespace ehpad.WEB.Controllers
         // GET: Injections/Create
         public IActionResult Create()
         {
-            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
-            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
+            IEnumerable<SelectListItem> selectListPeople = from p in _context.Peoples
+                                                     select new SelectListItem
+                                                     {
+                                                         Value = p.Id.ToString(),
+                                                         Text = p.Name + " " + p.Firstname
+                                                     };
+            ViewData["PeopleId"] = new SelectList(
+               selectListPeople.OrderBy(people => people.Text),
+                "Value",
+                "Text");
+
+            IEnumerable<SelectListItem> selectListVaccin = from v in _context.Vaccines
+                                                           select new SelectListItem
+                                                           {
+                                                               Value = v.Id.ToString(),
+                                                               Text = v.Drug.Name + " (" + v.Lot + ")"
+                                                           };
+            ViewData["VaccineId"] = new SelectList(
+               selectListVaccin.OrderBy(vaccin => vaccin.Text),
+                "Value",
+                "Text");
+
+            //ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
+            //ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
             return View();
         }
 
@@ -55,19 +77,11 @@ namespace ehpad.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
         {
-            ViewData["erreur"] = null;
             if (ModelState.IsValid)
             {
-               /*var injectionFind = await _context.Injections
-                .Where(m => m.PeopleId == injection.PeopleId && m.VaccineId == injection.VaccineId).ToListAsync();
-                System.Diagnostics.Debug.WriteLine(injectionFind);
-                if (injectionFind == null)
-                {*/
-                    _context.Add(injection);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                //}
-                //ViewData["erreur"] = "Cette personne a déjà reçu ce vaccin.";
+                _context.Add(injection);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
             ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
@@ -139,7 +153,7 @@ namespace ehpad.WEB.Controllers
 
             var injection = await _context.Injections
                 .Include(i => i.People)
-                .Include(i => i.Vaccine)
+                .Include("Vaccine.Drug")
                 .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
