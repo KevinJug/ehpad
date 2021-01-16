@@ -33,6 +33,19 @@ namespace ehpad.WEB.Controllers
 
         }
 
+
+        // POST: Filter/Filtre2
+     //   [HttpPost]
+     //   [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IndexReminderDelay()
+        {
+            ViewData["Injection"] = await _context.Injections
+                .Include("People").Include("Vaccine.Drug")
+                .Where(m => m.ReminderDate < DateTime.Today).ToListAsync();
+
+            return View("IndexFiltre2");
+        }
+
         // POST: Filter/Details
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

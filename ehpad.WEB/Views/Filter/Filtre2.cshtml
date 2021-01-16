@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ehpad.ORM.Injection>
+
+@{
+    ViewData["Title"] = "Filtre2";
+}
+
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.People.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.People.Firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vaccine.Drug)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReminderDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Model != null){
+    @foreach (var item in Model)    
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.People.Firstname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.People.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vaccine.Drug.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReminderDate)
+            </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
+
+
