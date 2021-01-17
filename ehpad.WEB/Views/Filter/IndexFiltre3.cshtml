@@ -1,4 +1,4 @@
-﻿@model ehpad.ORM.Injection
+﻿@model IEnumerable<ehpad.ORM.Drug>
 
 @{
     ViewData["Title"] = "Filtre";
@@ -28,17 +28,30 @@
 </nav>
 
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Filtre3" asp-route-id="@item.Id">Choix</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-
-@if (ViewData["Injection"] != null)
-{
-
-    <div>
-
-        @await Html.PartialAsync("Filtre2", (IEnumerable<ehpad.ORM.Injection>)ViewData["Injection"])
-       
-    </div>
-}
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
