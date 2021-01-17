@@ -30,6 +30,7 @@ namespace ehpad.WEB.Controllers
                 "Text");
             ViewData["Injection"] = null;
             return View();
+            
 
         }
 
