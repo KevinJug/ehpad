@@ -26,11 +26,13 @@ namespace ehpad.ORM
 
         [Display(Name = "Vaccin")]
         public Vaccine Vaccine { get; set; }
-
+        
+        [UniqueValue(VaccineId="VaccineId", ErrorMessage = "Cette personne a déjà reçu ce vaccin.")]
         [Display(Name = "Personne")]
         [Required(ErrorMessage = "Vous devez ajouter une personne.")]
         public int PeopleId { get; set; }
 
+        
         [Display(Name = "Personne")]
         public People People { get; set; }
     }

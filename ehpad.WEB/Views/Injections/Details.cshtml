@@ -26,17 +26,17 @@
             @Html.DisplayNameFor(model => model.Vaccine)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vaccine.Lot)
+            @Html.DisplayFor(model => model.Vaccine.Drug.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.People)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.People.Condition)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.People.Name)  @Html.DisplayFor(model => model.People.Firstname)
         </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <!--@Html.ActionLink("Edit", "Edit", new { idVaccine = Model.Vaccine.Id, idPeople = Model.People.Id }) |-->
     <a asp-action="Index">Back to List</a>
 </div>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ehpad.ORM;
+using System.Globalization;
 
 namespace ehpad.WEB.Controllers
 {
@@ -16,7 +17,7 @@ namespace ehpad.WEB.Controllers
         // GET: Brands
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            return View(await _context.Brands.OrderBy(brand => brand.Name).ToListAsync());
         }
 
         // GET: Brands/Details/5
@@ -52,6 +53,8 @@ namespace ehpad.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                brand.Name = textInfo.ToTitleCase(brand.Name.Trim());
                 _context.Add(brand);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,6 +94,8 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
+                    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                    brand.Name = textInfo.ToTitleCase(brand.Name.Trim());
                     _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }
