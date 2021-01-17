@@ -29,22 +29,20 @@ namespace ehpad.WEB.Controllers
                 "Value", 
                 "Text");
             ViewData["Injection"] = null;
+            ViewData["Page"] = 1;
             return View();
             
 
         }
 
-
-        // POST: Filter/Filtre2
-     //   [HttpPost]
-     //   [ValidateAntiForgeryToken]
         public async Task<IActionResult> IndexReminderDelay()
         {
             ViewData["Injection"] = await _context.Injections
                 .Include("People").Include("Vaccine.Drug")
                 .Where(m => m.ReminderDate < DateTime.Today).ToListAsync();
+            ViewData["Page"] = 2;
 
-            return View("IndexFiltre2");
+            return View("Index");
         }
 
         // POST: Filter/Details
@@ -73,7 +71,7 @@ namespace ehpad.WEB.Controllers
                 .ThenBy(injection => injection.Vaccine.Drug.Name)
                 .ThenBy(injection => injection.ReminderDate)
                 .ToListAsync();
-
+            ViewData["Page"] = 1;
             return View("Index");
         }
 
