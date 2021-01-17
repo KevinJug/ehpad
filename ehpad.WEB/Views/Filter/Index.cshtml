@@ -5,56 +5,70 @@
 }
 
 
-<h4>Lien vers les 4 filtres ici</h4>
-
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">1</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">Injections reçues</a> 
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="IndexReminderDelay">Retard d'un rappel</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">3</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">4</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">Personnes non vaccinées</a>
             </li>
         </ul>
     </div>
 </nav>
 
 
-
-<hr />
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Details">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <select asp-for="Id" class="form-control" asp-items="ViewBag.People"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Rechercher" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-@if (ViewData["Injection"] != null)
+<!--On affiche le premier filtre-->
+@if ((int)ViewData["Page"] == 1)
 {
-    <hr />
+    <h6>Liste des injections reçues par les résidents et par le personnel.</h6>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Details">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Id" class="control-label"></label>
+                    <select asp-for="Id" class="form-control" asp-items="ViewBag.People"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Rechercher" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    @if (ViewData["Injection"] != null)
+    {
+        <hr />
 
+        <div>
+
+            @await Html.PartialAsync("Details", (IEnumerable<ehpad.ORM.Injection>)ViewData["Injection"])
+
+        </div>
+    }
+}
+//On affiche le deuxieme filtre
+else if ((int)ViewData["Page"] == 2)
+{
+    <h6>Liste des personnes en retard pour un rappel de vaccin.</h6>
     <div>
 
-        @await Html.PartialAsync("Details", (IEnumerable<ehpad.ORM.Injection>)ViewData["Injection"])
-       
+        @await Html.PartialAsync("Filtre2", (IEnumerable<ehpad.ORM.Injection>)ViewData["Injection"])
+
     </div>
 }
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+//On affiche le troisieme filtre
+else if ((int)ViewData["Page"] == 3)
+{
+    <h6>Liste des personnes qui ne sont pas vaccinées.</h6>
+
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -115,35 +115,6 @@ namespace ehpad.WEB.Controllers
             return View(brand);
         }
 
-        // GET: Brands/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var brand = await _context.Brands
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            return View(brand);
-        }
-
-        // POST: Brands/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool BrandExists(int id)
         {
             return _context.Brands.Any(e => e.Id == id);

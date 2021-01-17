@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Injections</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ajouter</a>
 </p>
 <table class="table">
     <thead>
@@ -43,9 +43,8 @@
                 @Html.DisplayFor(modelItem => item.People.Name) @Html.DisplayFor(modelItem => item.People.Firstname)
             </td>
             <td>
-                <!--@Html.ActionLink("Edit", "Edit", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |-->
-                @Html.ActionLink("Details", "Details", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id })
+                @Html.ActionLink("Détail", "Details", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |
+                @Html.ActionLink("Supprimer", "Delete", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id })
             </td>
         </tr>
 }
