@@ -7,9 +7,12 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Injection</h4>
+    <h4>
+        Injection
+        <a asp-action="Index"><img src="~/image/arriere.png" alt="page index" width="30" height="30" /></a>
+    </h4>
     <hr />
-    <dl class="row">
+    <dl class="row col-sm-12">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.VaccineDate)
         </dt>
@@ -35,8 +38,4 @@
             @Html.DisplayFor(model => model.People.Name)  @Html.DisplayFor(model => model.People.Firstname)
         </dd>
     </dl>
-</div>
-<div>
-    <!--@Html.ActionLink("Edit", "Edit", new { idVaccine = Model.Vaccine.Id, idPeople = Model.People.Id }) |-->
-    <a asp-action="Index">Back to List</a>
 </div>

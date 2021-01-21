@@ -6,9 +6,6 @@
 
 <h1>Injections</h1>
 
-<p>
-    <a asp-action="Create">Ajouter</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -24,7 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.People)
             </th>
-            <th></th>
+            <th class="align-right">
+                <a asp-action="Create"><img src="~/image/ajouter.png" alt="ajouter" width="30" height="30" /></a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -42,9 +41,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.People.Name) @Html.DisplayFor(modelItem => item.People.Firstname)
             </td>
-            <td>
-                @Html.ActionLink("Détail", "Details", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id }) |
-                @Html.ActionLink("Supprimer", "Delete", new { idVaccine = item.Vaccine.Id, idPeople = item.People.Id })
+            <td class="align-right">
+                <a asp-action="Details" asp-route-idVaccine=@item.Vaccine.Id asp-route-idPeople=@item.People.Id><img src="~/image/visible.png" alt="visible" width="30" height="30" /></a>
+                <a asp-action="Delete" asp-route-idVaccine=@item.Vaccine.Id asp-route-idPeople=@item.People.Id><img src="~/image/supprimer.png" alt="supprimer" width="30" height="30" /></a>
             </td>
         </tr>
 }

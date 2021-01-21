@@ -6,9 +6,6 @@
 
 <h1>Vaccins</h1>
 
-<p>
-    <a asp-action="Create">Ajouter</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -21,7 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Brand)
             </th>
-            <th></th>
+            <th class="align-right">
+                <a asp-action="Create"><img src="~/image/ajouter.png" alt="ajouter" width="30" height="30" /></a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,10 +35,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Brand.Name)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Détail</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+            <td class="align-right">
+                <a asp-action="Edit" asp-route-id="@item.Id"><img src="~/image/modifier.png" alt="modifier" width="30" height="30" /></a>
+                <a asp-action="Details" asp-route-id="@item.Id"><img src="~/image/visible.png" alt="detail" width="30" height="30" /></a>
+                <a asp-action="Delete" asp-route-id="@item.Id"><img src="~/image/supprimer.png" alt="supprimer" width="30" height="30" /></a>
             </td>
         </tr>
 }

@@ -7,15 +7,89 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.navbar.menu {
+    position: fixed;
+    width: 100%;
+    background-color: #0876C2;
+    padding: 0;
+}
+
+.padding {
+    padding-top: 75px;
+    padding-bottom: 10px;
+    min-height: 100vh;
+}
+
+.main_bg {
+    border: 1px solid black;
+    background-color: #F5F5DC;
+    min-height: 86vh;
+    padding: 5px 15px;
+    box-shadow: 3px 2px 6px 3px #282828;
+    border-radius: 5px;
+}
+
+
+a.navbar-brand.white {
+    color: black;
+}
+
+li.nav-item a.white {
+    color: black;
+    display: block;
+    padding: 1rem 1rem;
+}
+
+a.navbar-brand.white:hover, li.nav-item a.white:hover {
+    color: white;
+}
+
+li.nav-item a.white:link {
+     text-decoration: none;
+}
+
+
+.navbar-nav > .active > a {
+    background-color: #0567AB;
+    color: white !important;
+}
+
+tbody > tr:nth-child(odd) {
+    background-color: #B3C0F2;
+}
+tbody > tr:hover {
+    background-color: #949FCB;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.container-row-wrap {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.container-justify {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-default {
+    border: 1px solid black;
+    width: 100%;
+}
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
+    padding: 0px 5px;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    width: 100%;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -55,7 +129,11 @@ button.accept-policy {
 -------------------------------------------------- */
 html {
   position: relative;
-  min-height: 100%;
+  height: 100%;
+}
+
+body {
+    min-height: 100%;
 }
 
 body {
