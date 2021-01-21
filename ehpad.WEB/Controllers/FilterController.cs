@@ -39,7 +39,9 @@ namespace ehpad.WEB.Controllers
         {
             ViewData["Injection"] = await _context.Injections
                 .Include("People").Include("Vaccine.Drug")
-                .Where(m => m.ReminderDate < DateTime.Today).ToListAsync();
+                .Where(m => m.ReminderDate < DateTime.Today)
+                .OrderByDescending(injection => injection.Vaccine.Drug.Name).ThenBy(injection => injection.People.Name).ThenBy(injection => injection.People.Firstname)
+                .ToListAsync();
             ViewData["Page"] = 2;
 
             return View("Index");

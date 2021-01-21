@@ -14,7 +14,9 @@ $(document).ready(function () {
 
     console.log(window.location.pathname);
     var path = window.location.pathname.split('/')[1];
+    var path2 = window.location.pathname.split('/')[2];
     console.log(path);
+    console.log(path2);
     switch (path) {
         case "Drugs":
             $('.drugs')
@@ -43,7 +45,17 @@ $(document).ready(function () {
         default :
             $('.filters')
                 .addClass('active');
-
+            if (path2 === "Index") {
+                $('.filter-index')
+                    .addClass('active');
+            } else if (path2 === "IndexNoVaccine") {
+                $('.filter-no-vaccine')
+                    .addClass('active');
+                                    ;
+            } else {
+                 $('.filter-index-reminder')
+                   .addClass('active');
+            }
     }
 
     $('ul.navbar-nav > li')
