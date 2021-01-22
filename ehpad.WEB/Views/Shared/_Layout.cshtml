@@ -12,13 +12,16 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 menu">
             <div class="container">
-                <a class="navbar-brand white" asp-area="" asp-controller="Filter" asp-action="IndexReminderDelay">EPADH</a>
+                <a class="navbar-brand white" asp-area="" asp-controller="Filter" asp-action="Index">GESTI'PAD</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul id="navMain" class="navbar-nav flex-grow-1">
+                        <li class="nav-item filters">
+                            <a class="white" asp-area="" asp-controller="Filter" asp-action="Index">Filtre</a>
+                        </li>
                         <li class="nav-item brands">
                             <a class="white" asp-area="" asp-controller="Brands" asp-action="Index">Marque</a>
                         </li>
@@ -33,9 +36,6 @@
                         </li>
                         <li class="nav-item injections">
                             <a class="white" asp-area="" asp-controller="Injections" asp-action="Index">Injection</a>
-                        </li>
-                        <li class="nav-item filters">
-                            <a class="white" asp-area="" asp-controller="Filter" asp-action="Index">Filtre</a>
                         </li>
                     </ul>
                 </div>

@@ -7,14 +7,14 @@
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-2 menu2">
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1 container-justify">
-            <li class="nav-item filter-index">
-                <a class="white" asp-area="" asp-controller="Filter" asp-action="Index">Injections reçues</a>
-            </li>
             <li class="nav-item filter-index-reminder">
-                <a class="white" asp-area="" asp-controller="Filter" asp-action="IndexReminderDelay">Retard d'un rappel</a>
+                <a class="white" asp-area="" asp-controller="Filter" asp-action="Index">Retard d'un rappel</a>
+            </li>
+            <li class="nav-item filter-index">
+                <a class="white" asp-area="" asp-controller="Filter" asp-action="IndexVaccineByPeople">Injections reçues</a>
             </li>
             <li class="nav-item filter-no-vaccine">
-                <a class="white" asp-area="" asp-controller="Filter" asp-action="Index">Personnes non vaccinées</a>
+                <a class="white" disabled asp-area="" asp-controller="Filter" asp-action="IndexNoVaccine">Personnes non vaccinées</a>
             </li>
         </ul>
     </div>

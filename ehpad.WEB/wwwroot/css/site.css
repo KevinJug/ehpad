@@ -19,6 +19,7 @@ a.navbar-brand {
     width: 100%;
     background-color: #0876C2;
     padding: 0;
+    border-radius: 5px 5px 0 0;
 }
 
 .table-height {

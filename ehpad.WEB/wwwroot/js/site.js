@@ -45,7 +45,7 @@ $(document).ready(function () {
         default :
             $('.filters')
                 .addClass('active');
-            if (path2 === "Index") {
+            if (path2 === "IndexVaccineByPeople" || path2 === "Details") {
                 $('.filter-index')
                     .addClass('active');
             } else if (path2 === "IndexNoVaccine") {
