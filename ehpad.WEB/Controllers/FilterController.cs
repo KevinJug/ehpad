@@ -12,11 +12,22 @@ namespace ehpad.WEB.Controllers
 {
     public class FilterController : Controller
     {
-
         private readonly Context _context = new Context();
 
-        // GET: FilterController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
+        {
+            ViewData["Injection"] = await _context.Injections
+                .Include("People").Include("Vaccine.Drug")
+                .Where(m => m.ReminderDate < DateTime.Today)
+                .OrderByDescending(injection => injection.Vaccine.Drug.Name).ThenBy(injection => injection.People.Name).ThenBy(injection => injection.People.Firstname)
+                .ToListAsync();
+            ViewData["Page"] = 2;
+
+            return View();
+        }
+
+         // GET: FilterController
+        public ActionResult IndexVaccineByPeople()
         {
             IEnumerable<SelectListItem> selectList = from p in _context.Peoples
                                                      select new SelectListItem
@@ -25,24 +36,14 @@ namespace ehpad.WEB.Controllers
                                                          Text = p.Name + " " + p.Firstname
                                                      };
             ViewData["People"] = new SelectList(
-               selectList.OrderBy(people => people.Text), 
-                "Value", 
+               selectList.OrderBy(people => people.Text),
+                "Value",
                 "Text");
             ViewData["Injection"] = null;
             ViewData["Page"] = 1;
-            return View();
-            
-
-        }
-
-        public async Task<IActionResult> IndexReminderDelay()
-        {
-            ViewData["Injection"] = await _context.Injections
-                .Include("People").Include("Vaccine.Drug")
-                .Where(m => m.ReminderDate < DateTime.Today).ToListAsync();
-            ViewData["Page"] = 2;
-
             return View("Index");
+
+
         }
 
         // POST: Filter/Details
