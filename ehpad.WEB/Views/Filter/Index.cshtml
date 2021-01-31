@@ -14,7 +14,7 @@
                 <a class="white" asp-area="" asp-controller="Filter" asp-action="IndexVaccineByPeople">Injections reçues</a>
             </li>
             <li class="nav-item filter-no-vaccine">
-                <a class="white" disabled asp-area="" asp-controller="Filter" asp-action="IndexNoVaccine">Personnes non vaccinées</a>
+                <a class="white" asp-area="" asp-controller="Filter" asp-action="IndexNoVaccine">Personnes non vaccinées</a>
             </li>
         </ul>
     </div>
@@ -64,7 +64,34 @@
     else if ((int)ViewData["Page"] == 3)
     {
         <h6>Liste des personnes qui ne sont pas vaccinées.</h6>
+        <div class="row col-md-12">
+            <div class="col-md-12">
+                <form asp-action="NoVaccine">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-12 container-row-wrap">
+                        <div class="form-group col-md-4">
+                            <select asp-for="Id" class="form-control" asp-items="ViewBag.Drug"></select>
+                        </div>
+                        <div class="form-group offset-md-1 col-md-2">
+                            <input name="date" value="true" type="checkbox" /> Date Actuelle
+                        </div>
+                        <div class="form-group offset-md-1 col-md-4">
+                            <input type="submit" value="Rechercher" class="btn btn-primary" />
+                        </div>
+                    </div>
 
+                </form>
+            </div>
+        </div>
+
+        @if (ViewData["People"] != null)
+        {
+            <div class="table-height">
+
+                @await Html.PartialAsync("NoVaccine", (IEnumerable<ehpad.ORM.People>)ViewData["People"])
+
+            </div>
+        }
     }
 </div>
 

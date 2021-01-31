@@ -42,11 +42,12 @@ namespace ehpad.WEB.Controllers
             ViewData["Injection"] = null;
             ViewData["Page"] = 1;
             return View("Index");
+        }
 
         // GET: Filter/IndexFiltre3
         //   [HttpPost]
         //   [ValidateAntiForgeryToken]
-        public ActionResult IndexFiltre3()
+        public ActionResult IndexNoVaccine()
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
                                                      select new SelectListItem
@@ -55,17 +56,18 @@ namespace ehpad.WEB.Controllers
                                                          Text = d.Name
                                                      };
             ViewData["Drug"] = new SelectList(
-               selectList,
+               selectList.OrderBy(drug => drug.Text),
                 "Value",
                 "Text");
-            ViewData["Injection"] = null;
-            return View();
+            ViewData["People"] = null;
+            ViewData["Page"] = 3;
+            return View("Index");
         }
 
         // GET: Filter/Filtre3
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598
-        public async Task<IActionResult> Filtre3([Bind("Id")] Drug drug, bool date)
+        public async Task<IActionResult> NoVaccine([Bind("Id")] Drug drug, bool date)
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
                                                      select new SelectListItem
@@ -86,17 +88,16 @@ namespace ehpad.WEB.Controllers
             if (date is false)
             {
                 personneVaccineeListe = await _context.Injections
-                   .Include("People")
-                   .Where(m => m.VaccineId == drug.Id)
+                   .Include("People").Include("Vaccine.Drug")
+                   .Where(m => m.Vaccine.Drug.Id == drug.Id)
                    .ToListAsync();
             }
             else
             {
                 DateTime AnneeActuelle = new DateTime(DateTime.Today.Year, 1, 1);
                 personneVaccineeListe = await _context.Injections
-                   .Include("People")
-                   .Where(m => m.VaccineDate >= AnneeActuelle)
-                   .Where(m => m.VaccineId == drug.Id)
+                   .Include("People").Include("Vaccine.Drug")
+                   .Where(m => m.Vaccine.Drug.Id == drug.Id && m.VaccineDate >= AnneeActuelle)
                    .ToListAsync();
             }
             
@@ -116,9 +117,9 @@ namespace ehpad.WEB.Controllers
                 }
             });     
 
-            ViewData["People"] = personneNonVaccineeListe;
-
-            return View("IndexFiltre3");
+            ViewData["People"] = personneNonVaccineeListe.OrderBy(people => people.Name).ThenBy(people => people.Firstname);
+            ViewData["Page"] = 3;
+            return View("Index");
         }
 
         // POST: Filter/Filtre2
