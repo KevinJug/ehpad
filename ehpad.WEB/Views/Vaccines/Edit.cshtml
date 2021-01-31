@@ -1,44 +1,45 @@
 ﻿@model ehpad.ORM.Vaccine
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modifier";
 }
 
-<h1>Edit</h1>
+<div class="second-main-bg">
+    <h1>Modifier</h1>
 
-<h4>Vaccine</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Lot" class="control-label"></label>
-                <input asp-for="Lot" class="form-control" />
-                <span asp-validation-for="Lot" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DrugId" class="control-label"></label>
-                <select asp-for="DrugId" class="form-control" asp-items="ViewBag.DrugId"></select>
-                <span asp-validation-for="DrugId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Vaccin <a asp-action="Index"><img src="~/image/arriere.png" alt="page index" width="30" height="30" /></a></h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-12 container-row-wrap">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group col-md-5">
+                        <label asp-for="Lot" class="control-label"></label>
+                        <input asp-for="Lot" class="form-control" />
+                        <span asp-validation-for="Lot" class="text-danger"></span>
+                    </div>
+                    <div class="form-group offset-md-2 col-md-5">
+                        <label asp-for="DrugId" class="control-label"></label>
+                        <select asp-for="DrugId" class="form-control" asp-items="ViewBag.DrugId"></select>
+                        <span asp-validation-for="DrugId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label asp-for="BrandId" class="control-label"></label>
+                        <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
+                        <span asp-validation-for="BrandId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 container-row-wrap">
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="Valider" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

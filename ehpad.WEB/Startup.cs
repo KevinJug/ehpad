@@ -52,7 +52,7 @@ namespace ehpad.WEB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Filter}/{action=Index}/{id?}");
             });
         }
     }

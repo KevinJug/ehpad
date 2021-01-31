@@ -16,22 +16,22 @@ namespace ehpad.WEB.Controllers
         // GET: Injections
         public async Task<IActionResult> Index()
         {
-            var context = _context.Injections.Include(i => i.People).Include(i => i.Vaccine);
-            return View(await context.ToListAsync());
+            var context = _context.Injections.Include(i => i.People).Include("Vaccine.Drug");
+            return View(await context.OrderByDescending(injection => injection.ReminderDate).ThenBy(injection => injection.People.Name).ThenBy(injection => injection.People.Firstname).ToListAsync());
         }
 
         // GET: Injections/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? idVaccine, int? idPeople)
         {
-            if (id == null)
+            if (idVaccine == null || idPeople == null)
             {
                 return NotFound();
             }
 
             var injection = await _context.Injections
                 .Include(i => i.People)
-                .Include(i => i.Vaccine)
-                .FirstOrDefaultAsync(m => m.PeopleId == id);
+                .Include("Vaccine.Drug")
+                .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
                 return NotFound();
@@ -43,8 +43,30 @@ namespace ehpad.WEB.Controllers
         // GET: Injections/Create
         public IActionResult Create()
         {
-            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
-            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
+            IEnumerable<SelectListItem> selectListPeople = from p in _context.Peoples
+                                                     select new SelectListItem
+                                                     {
+                                                         Value = p.Id.ToString(),
+                                                         Text = p.Name + " " + p.Firstname
+                                                     };
+            ViewData["PeopleId"] = new SelectList(
+               selectListPeople.OrderBy(people => people.Text),
+                "Value",
+                "Text");
+
+            IEnumerable<SelectListItem> selectListVaccin = from v in _context.Vaccines
+                                                           select new SelectListItem
+                                                           {
+                                                               Value = v.Id.ToString(),
+                                                               Text = v.Drug.Name + " (" + v.Lot + ")"
+                                                           };
+            ViewData["VaccineId"] = new SelectList(
+               selectListVaccin.OrderBy(vaccin => vaccin.Text),
+                "Value",
+                "Text");
+
+            //ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
+            //ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
             return View();
         }
 
@@ -65,74 +87,20 @@ namespace ehpad.WEB.Controllers
             ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
             return View(injection);
         }
-
-        // GET: Injections/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var injection = await _context.Injections.FindAsync(id);
-            if (injection == null)
-            {
-                return NotFound();
-            }
-            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
-            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
-            return View(injection);
-        }
-
-        // POST: Injections/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
-        {
-            if (id != injection.PeopleId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(injection);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InjectionExists(injection.PeopleId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition", injection.PeopleId);
-            ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
-            return View(injection);
-        }
+ 
 
         // GET: Injections/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? idVaccine, int? idPeople)
         {
-            if (id == null)
+            if (idVaccine == null || idPeople == null)
             {
                 return NotFound();
             }
 
             var injection = await _context.Injections
                 .Include(i => i.People)
-                .Include(i => i.Vaccine)
-                .FirstOrDefaultAsync(m => m.PeopleId == id);
+                .Include("Vaccine.Drug")
+                .FirstOrDefaultAsync(m => m.PeopleId == idPeople && m.VaccineId == idVaccine);
             if (injection == null)
             {
                 return NotFound();
@@ -144,17 +112,17 @@ namespace ehpad.WEB.Controllers
         // POST: Injections/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int VaccineId, int PeopleId)
         {
-            var injection = await _context.Injections.FindAsync(id);
+            var injection = await _context.Injections.FirstOrDefaultAsync(m => m.PeopleId == PeopleId && m.VaccineId == VaccineId);
             _context.Injections.Remove(injection);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InjectionExists(int id)
+        private bool InjectionExists(int idPeople, int idVaccine)
         {
-            return _context.Injections.Any(e => e.PeopleId == id);
+            return _context.Injections.Any(e => e.PeopleId == idPeople && e.VaccineId == idVaccine);
         }
     }
 }

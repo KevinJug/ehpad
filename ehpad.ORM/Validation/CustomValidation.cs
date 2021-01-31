@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace ehpad.ORM.Validation
         {
 
             DateTime date = Convert.ToDateTime(value);
-            DateTime minDate = Convert.ToDateTime(DateTime.Now.AddYears(-60).ToShortDateString());
+            DateTime minDate = Convert.ToDateTime(DateTime.Now.AddYears(-15).ToShortDateString());
             DateTime maxDate = Convert.ToDateTime(DateTime.Now.AddYears(-140).ToShortDateString());
 
             if (date <= minDate && date >= maxDate)
@@ -84,6 +85,34 @@ namespace ehpad.ORM.Validation
                 return ValidationResult.Success;
             else
                 return new ValidationResult(ErrorMessage);
+        }
+    }
+
+    public class UniqueValue : ValidationAttribute
+    {
+        public string VaccineId { get; set; }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+
+            PropertyInfo vaccineIdProperty = validationContext.ObjectType.GetProperty(VaccineId);
+
+            int vaccineId = (int)vaccineIdProperty.GetValue(validationContext.ObjectInstance, null);
+
+            Context ct = new Context();
+
+             var injection = ct.Injections.FirstOrDefault(m => m.PeopleId == (int)value && m.VaccineId == vaccineId);
+          
+            
+            if (injection == null)
+            {
+                return ValidationResult.Success;
+            }
+            else
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+
         }
     }
 }

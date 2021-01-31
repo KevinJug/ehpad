@@ -17,7 +17,7 @@ namespace ehpad.WEB.Controllers
         public async Task<IActionResult> Index()
         {
             var context = _context.Vaccines.Include(v => v.Brand).Include(v => v.Drug);
-            return View(await context.ToListAsync());
+            return View(await context.OrderBy(vaccine => vaccine.Drug.Name).ThenBy(vaccine => vaccine.Brand.Name).ToListAsync());
         }
 
         // GET: Vaccines/Details/5

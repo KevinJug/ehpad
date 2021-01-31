@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ehpad.ORM;
+using System.Globalization;
 
 namespace ehpad.WEB.Controllers
 {
@@ -16,7 +17,7 @@ namespace ehpad.WEB.Controllers
         // GET: Drugs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Drugs.ToListAsync());
+            return View(await _context.Drugs.OrderBy(drug => drug.Name).ToListAsync());
         }
 
         // GET: Drugs/Details/5
@@ -52,6 +53,8 @@ namespace ehpad.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                drug.Name = textInfo.ToTitleCase(drug.Name.Trim());
                 _context.Add(drug);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,6 +94,8 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
+                    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                    drug.Name = textInfo.ToTitleCase(drug.Name.Trim());
                     _context.Update(drug);
                     await _context.SaveChangesAsync();
                 }
@@ -110,34 +115,6 @@ namespace ehpad.WEB.Controllers
             return View(drug);
         }
 
-        // GET: Drugs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var drug = await _context.Drugs
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (drug == null)
-            {
-                return NotFound();
-            }
-
-            return View(drug);
-        }
-
-        // POST: Drugs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var drug = await _context.Drugs.FindAsync(id);
-            _context.Drugs.Remove(drug);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool DrugExists(int id)
         {

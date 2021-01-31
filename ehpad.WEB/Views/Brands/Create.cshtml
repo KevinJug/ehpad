@@ -1,32 +1,35 @@
 ﻿@model ehpad.ORM.Brand
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ajouter une marque";
 }
 
-<h1>Create</h1>
+<div class="second-main-bg">
+    <h1>Ajouter</h1>
 
-<h4>Brand</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Marque <a asp-action="Index"><img src="~/image/arriere.png" alt="page index" width="30" height="30" /></a></h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-12 container-row-wrap">
+                    <div class="form-group col-md-5">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12 container-row-wrap">
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="Ajouter" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

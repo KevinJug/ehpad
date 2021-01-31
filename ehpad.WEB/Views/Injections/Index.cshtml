@@ -4,51 +4,51 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="second-main-bg">
+    <h1>Liste des injections</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.VaccineDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReminderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vaccine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.People)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VaccineDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReminderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vaccine.Lot)
-                @Html.DisplayFor(modelItem => item.Vaccine.Drug.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.People.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.VaccineDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReminderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vaccine)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.People)
+                </th>
+                <th class="align-right">
+                    <a asp-action="Create"><img src="~/image/ajouter.png" alt="ajouter" width="30" height="30" /></a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VaccineDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReminderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vaccine.Drug.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.People.Name) @Html.DisplayFor(modelItem => item.People.Firstname)
+                    </td>
+                    <td class="align-right">
+                        <a asp-action="Details" asp-route-idVaccine=@item.Vaccine.Id asp-route-idPeople=@item.People.Id><img src="~/image/visible.png" alt="visible" width="30" height="30" /></a>
+                        <a asp-action="Delete" asp-route-idVaccine=@item.Vaccine.Id asp-route-idPeople=@item.People.Id><img src="~/image/supprimer.png" alt="supprimer" width="30" height="30" /></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

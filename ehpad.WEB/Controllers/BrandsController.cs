@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ehpad.ORM;
+using System.Globalization;
 
 namespace ehpad.WEB.Controllers
 {
@@ -16,7 +17,7 @@ namespace ehpad.WEB.Controllers
         // GET: Brands
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            return View(await _context.Brands.OrderBy(brand => brand.Name).ToListAsync());
         }
 
         // GET: Brands/Details/5
@@ -52,6 +53,8 @@ namespace ehpad.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                brand.Name = textInfo.ToTitleCase(brand.Name.Trim());
                 _context.Add(brand);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,6 +94,8 @@ namespace ehpad.WEB.Controllers
             {
                 try
                 {
+                    TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+                    brand.Name = textInfo.ToTitleCase(brand.Name.Trim());
                     _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }
@@ -108,35 +113,6 @@ namespace ehpad.WEB.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(brand);
-        }
-
-        // GET: Brands/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var brand = await _context.Brands
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            return View(brand);
-        }
-
-        // POST: Brands/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var brand = await _context.Brands.FindAsync(id);
-            _context.Brands.Remove(brand);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool BrandExists(int id)
