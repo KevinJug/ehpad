@@ -4,19 +4,10 @@
 // Write your JavaScript code.
 
 
-console.log(window.location.pathname);
-console.log(window.location.pathname.split('/'));
-console.log(window.location.pathname.split('/')[0]);
-console.log(window.location.pathname.split('/')[1]);
-
-
 $(document).ready(function () {
 
-    console.log(window.location.pathname);
     var path = window.location.pathname.split('/')[1];
     var path2 = window.location.pathname.split('/')[2];
-    console.log(path);
-    console.log(path2);
     switch (path) {
         case "Drugs":
             $('.drugs')
@@ -48,7 +39,7 @@ $(document).ready(function () {
             if (path2 === "IndexVaccineByPeople" || path2 === "Details") {
                 $('.filter-index')
                     .addClass('active');
-            } else if (path2 === "IndexNoVaccine") {
+            } else if (path2 === "IndexNoVaccine" || path2 == "NoVaccine") {
                 $('.filter-no-vaccine')
                     .addClass('active');
                                     ;
