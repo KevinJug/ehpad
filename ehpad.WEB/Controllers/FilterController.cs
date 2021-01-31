@@ -26,7 +26,7 @@ namespace ehpad.WEB.Controllers
             return View();
         }
 
-         // GET: FilterController
+        // GET: FilterController
         public ActionResult IndexVaccineByPeople()
         {
             IEnumerable<SelectListItem> selectList = from p in _context.Peoples
@@ -42,11 +42,10 @@ namespace ehpad.WEB.Controllers
             ViewData["Injection"] = null;
             ViewData["Page"] = 1;
             return View("Index");
+        }
 
-        // GET: Filter/IndexFiltre3
-        //   [HttpPost]
-        //   [ValidateAntiForgeryToken]
-        public ActionResult IndexFiltre3()
+        // GET: Filter/IndexNoVaccine
+        public ActionResult IndexNoVaccine()
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
                                                      select new SelectListItem
@@ -58,13 +57,13 @@ namespace ehpad.WEB.Controllers
                selectList,
                 "Value",
                 "Text");
-            ViewData["Injection"] = null;
-            return View();
+            ViewData["People"] = null;
+            ViewData["Page"] = 3;
+
+            return View("Index");
         }
 
         // GET: Filter/Filtre3
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598
         public async Task<IActionResult> Filtre3([Bind("Id")] Drug drug, bool date)
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
@@ -114,11 +113,11 @@ namespace ehpad.WEB.Controllers
                 {
                     personneNonVaccineeListe.Add(people);
                 }
-            });     
+            });
 
             ViewData["People"] = personneNonVaccineeListe;
 
-            return View("IndexFiltre3");
+            return View("Index");
         }
 
         // POST: Filter/Details
