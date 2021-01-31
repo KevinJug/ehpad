@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ehpad.ORM.Drug>
+﻿@model ehpad.ORM.Drug
 
 @{
     ViewData["Title"] = "Filtre";
@@ -18,7 +18,7 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="IndexReminderDelay">Retard d'un rappel</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="IndexFiltre3">Personne vaccinée</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="IndexFiltre3">Personne non vaccinée</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Filter" asp-action="Index">4</a>
@@ -28,30 +28,35 @@
 </nav>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Filtre3" asp-route-id="@item.Id">Choix</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<hr />
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Filtre3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select asp-for="Id" class="form-control" asp-items="ViewBag.Drug"></select>
+            </div>
+            <div class="form-group">
+                <input name="date" value="true" type="checkbox" /> Date Actuelle
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Rechercher" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (ViewData["People"] != null)
+{
+    <hr />
+
+    <div>
+
+        @await Html.PartialAsync("Filtre3", (IEnumerable<ehpad.ORM.People>)ViewData["People"])
+
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
