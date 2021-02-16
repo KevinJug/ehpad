@@ -14,6 +14,7 @@ namespace ehpad.WEB.Controllers
     {
         private readonly Context _context = new Context();
 
+        // GET: Filter/Index
         public async Task<IActionResult> Index()
         {
             ViewData["Injection"] = await _context.Injections
@@ -26,7 +27,7 @@ namespace ehpad.WEB.Controllers
             return View();
         }
 
-         // GET: FilterController
+        // GET: Filter
         public ActionResult IndexVaccineByPeople()
         {
             IEnumerable<SelectListItem> selectList = from p in _context.Peoples
@@ -44,9 +45,7 @@ namespace ehpad.WEB.Controllers
             return View("Index");
         }
 
-        // GET: Filter/IndexFiltre3
-        //   [HttpPost]
-        //   [ValidateAntiForgeryToken]
+        // GET: Filter/IndexNoVaccine
         public ActionResult IndexNoVaccine()
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
@@ -64,9 +63,7 @@ namespace ehpad.WEB.Controllers
             return View("Index");
         }
 
-        // GET: Filter/Filtre3
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598
+        // GET: Filter/NoVaccine/:date
         public async Task<IActionResult> NoVaccine([Bind("Id")] Drug drug, bool date)
         {
             IEnumerable<SelectListItem> selectList = from d in _context.Drugs
@@ -122,9 +119,7 @@ namespace ehpad.WEB.Controllers
             return View("Index");
         }
 
-        // POST: Filter/Filtre2
-        //   [HttpPost]
-        //   [ValidateAntiForgeryToken]
+        // POST: Filter/IndexReminderDelay
         public async Task<IActionResult> IndexReminderDelay()
         {
             ViewData["Injection"] = await _context.Injections
@@ -136,8 +131,6 @@ namespace ehpad.WEB.Controllers
 
         
         // POST: Filter/Details
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details([Bind("Id")] People people)

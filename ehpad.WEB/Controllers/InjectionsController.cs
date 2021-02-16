@@ -20,7 +20,7 @@ namespace ehpad.WEB.Controllers
             return View(await context.OrderByDescending(injection => injection.ReminderDate).ThenBy(injection => injection.People.Name).ThenBy(injection => injection.People.Firstname).ToListAsync());
         }
 
-        // GET: Injections/Details/5
+        // GET: Injections/Details/:id/:idPeople
         public async Task<IActionResult> Details(int? idVaccine, int? idPeople)
         {
             if (idVaccine == null || idPeople == null)
@@ -65,14 +65,10 @@ namespace ehpad.WEB.Controllers
                 "Value",
                 "Text");
 
-            //ViewData["PeopleId"] = new SelectList(_context.Peoples, "Id", "Condition");
-            //ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot");
             return View();
         }
 
         // POST: Injections/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VaccineDate,ReminderDate,VaccineId,PeopleId")] Injection injection)
@@ -87,9 +83,9 @@ namespace ehpad.WEB.Controllers
             ViewData["VaccineId"] = new SelectList(_context.Vaccines, "Id", "Lot", injection.VaccineId);
             return View(injection);
         }
- 
 
-        // GET: Injections/Delete/5
+
+        // GET: Injections/Delete/:id/:idPeople
         public async Task<IActionResult> Delete(int? idVaccine, int? idPeople)
         {
             if (idVaccine == null || idPeople == null)
@@ -109,7 +105,7 @@ namespace ehpad.WEB.Controllers
             return View(injection);
         }
 
-        // POST: Injections/Delete/5
+        // POST: Injections/Delete/:id/:idPeople
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int VaccineId, int PeopleId)

@@ -20,7 +20,7 @@ namespace ehpad.WEB.Controllers
             return View(await _context.Drugs.OrderBy(drug => drug.Name).ToListAsync());
         }
 
-        // GET: Drugs/Details/5
+        // GET: Drugs/Details/:id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,8 +45,6 @@ namespace ehpad.WEB.Controllers
         }
 
         // POST: Drugs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Drug drug)
@@ -62,7 +60,7 @@ namespace ehpad.WEB.Controllers
             return View(drug);
         }
 
-        // GET: Drugs/Edit/5
+        // GET: Drugs/Edit/:id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,9 +76,7 @@ namespace ehpad.WEB.Controllers
             return View(drug);
         }
 
-        // POST: Drugs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Drugs/Edit/:id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Drug drug)
