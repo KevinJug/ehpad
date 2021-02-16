@@ -5,13 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ehpad.ORM;
 
 namespace ehpad.WEB.Controllers
 {
     public class InjectionsController : Controller
     {
-        private readonly Context _context = new Context();
+        private readonly Context _context;
+        private readonly IConfiguration _config;
+
+        public InjectionsController(IConfiguration conf)
+        {
+            _config = conf;
+            _context = new Context(conf.GetConnectionString("BDD"));
+        }
 
         // GET: Injections
         public async Task<IActionResult> Index()

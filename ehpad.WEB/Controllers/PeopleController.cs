@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ehpad.ORM;
 using System.Globalization;
 
@@ -12,7 +13,14 @@ namespace ehpad.WEB.Controllers
 {
     public class PeopleController : Controller
     {
-        private readonly Context _context = new Context();
+        private readonly Context _context;
+        private readonly IConfiguration _config;
+
+        public PeopleController(IConfiguration conf)
+        {
+            _config = conf;
+            _context = new Context(conf.GetConnectionString("BDD"));
+        }
 
         // GET: People
         public async Task<IActionResult> Index()

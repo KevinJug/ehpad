@@ -6,13 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace ehpad.WEB.Controllers
 {
     public class FilterController : Controller
     {
-        private readonly Context _context = new Context();
+        private readonly Context _context;
+        private readonly IConfiguration _config;
+
+        public FilterController(IConfiguration conf)
+        {
+            _config = conf;
+            _context = new Context(conf.GetConnectionString("BDD"));
+        }
 
         // GET: Filter/Index
         public async Task<IActionResult> Index()

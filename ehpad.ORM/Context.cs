@@ -14,16 +14,24 @@ namespace ehpad.ORM
         public DbSet<People> Peoples { get; set; }
         public DbSet<Injection> Injections { get; set; }
 
+        private string connectionString = "Data Source=ephad.db";
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Injection>()
                 .HasKey(i => new { i.PeopleId, i.VaccineId });
         }
 
+        public Context(string cs)
+        {
+            connectionString = cs;
+        }
+
+        public Context() { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=ephad.db");
-            //options.UseSqlite(ConfigurationManager.ConnectionStrings["SqLiteDatabase"].ConnectionString);
+            options.UseSqlite(connectionString);
         }
     }
 }
