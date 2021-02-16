@@ -119,7 +119,7 @@ namespace ehpad.WEB.Controllers
             return View("Index");
         }
 
-        // POST: Filter/IndexReminderDelay
+        // GET: Filter/IndexReminderDelay
         public async Task<IActionResult> IndexReminderDelay()
         {
             ViewData["Injection"] = await _context.Injections
