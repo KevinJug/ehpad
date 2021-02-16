@@ -20,7 +20,7 @@ namespace ehpad.WEB.Controllers
             return View(await _context.Peoples.OrderBy(people => people.Name).ThenBy(people => people.Firstname).ToListAsync());
         }
 
-        // GET: People/Details/5
+        // GET: People/Details/:id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,8 +45,6 @@ namespace ehpad.WEB.Controllers
         }
 
         // POST: People/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Firstname,Sex,Birth,Condition")] People people)
@@ -63,7 +61,7 @@ namespace ehpad.WEB.Controllers
             return View(people);
         }
 
-        // GET: People/Edit/5
+        // GET: People/Edit/:id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,9 +77,7 @@ namespace ehpad.WEB.Controllers
             return View(people);
         }
 
-        // POST: People/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: People/Edit/:id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Firstname,Sex,Birth,Condition")] People people)
@@ -117,7 +113,7 @@ namespace ehpad.WEB.Controllers
             return View(people);
         }
 
-        // GET: People/Delete/5
+        // GET: People/Delete/:id
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +131,7 @@ namespace ehpad.WEB.Controllers
             return View(people);
         }
 
-        // POST: People/Delete/5
+        // POST: People/Delete/:id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

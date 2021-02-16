@@ -20,7 +20,7 @@ namespace ehpad.WEB.Controllers
             return View(await _context.Brands.OrderBy(brand => brand.Name).ToListAsync());
         }
 
-        // GET: Brands/Details/5
+        // GET: Brands/Details/:id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,8 +45,6 @@ namespace ehpad.WEB.Controllers
         }
 
         // POST: Brands/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Brand brand)
@@ -62,7 +60,7 @@ namespace ehpad.WEB.Controllers
             return View(brand);
         }
 
-        // GET: Brands/Edit/5
+        // GET: Brands/Edit/:id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,9 +76,7 @@ namespace ehpad.WEB.Controllers
             return View(brand);
         }
 
-        // POST: Brands/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Brands/Edit/:id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Brand brand)
